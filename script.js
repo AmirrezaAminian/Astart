@@ -9,6 +9,11 @@ function removeFromArray(arr , elt){
   }
 }
 
+function heuristic(a,b){
+  var d = dist(a.i,a.j,b.i,b.j) ;
+  return d ;
+}
+
 var cols = 5 ;
 var rows = 5 ;
 var grid = new Array(cols);
@@ -111,6 +116,28 @@ function draw(){
     removeFromArray(openSet,current) ;
     //openSet.remove(current)
     closedSet.push(current) ;
+
+    var neighbors = current.neighbors;
+
+    for(var i = 0 ; i < neighbors.length ; i++){
+      var neighbor = neighbors[i];
+      
+      if(!closedSet.includes(neighbor)){
+        var tempG = current.g + 1 ;
+
+        if(openSet.includes(neighbor)){
+          if(tempG < neighbor.g){
+            neighbor.g = tempG;
+          }
+        }else{
+          neighbor.g = tempG ;
+          openSet.push(neighbor) ;
+        }
+ 
+        neighbor.h = heuristic(neighbor,end) ;
+        neighbor.f = neighbor.g + neighbor.h ;
+      }
+    }
     // we can keep going
   }else{
     // ...
