@@ -15,8 +15,8 @@ function heuristic(a,b){
   return d ;
 }
 
-var cols = 25 ;
-var rows = 25 ;
+var cols = 50 ;
+var rows = 50 ;
 var grid = new Array(cols);
 
 var openSet = [] ;
@@ -25,7 +25,6 @@ var start ;
 var end;
 var w , h ;
 var path = [];
-var nosolution = false ;
 
 
   function Spot( i ,j){
@@ -38,7 +37,7 @@ var nosolution = false ;
     this.previous = undefined ;
     this.wall = false ;
 
-    if(random(1) < 0.4){
+    if(random(1) < 0.3){
       this.wall = true ;
     }
 
@@ -71,6 +70,21 @@ var nosolution = false ;
       if(j > 0){
         this.neighbors.push(grid[i][j - 1]);
       }
+      if(i > 0 && j > 0){
+        this.neighbors.push(grid[i-1][j-1]) ;
+      }
+      if(i < cols - 1 && j > 0){
+        this.neighbors.push(grid[i + 1][j - 1]) ;
+      }
+      if(i > 0 && j < rows - 1){
+        this.neighbors.push(grid[i - 1][j + 1]) ;
+      }
+
+      if (i < cols - 1 && j < rows -1) {
+        this.neighbors.push(grid[i + 1][j + 1]);
+      }
+       
+      
     }
   }
 
@@ -156,8 +170,8 @@ function draw(){
   } else {
 
     console.log('no soloution');
-    nosolution = true ;
     noLoop();
+    return ;
 
     // no soulotion ...
   }
@@ -178,7 +192,7 @@ function draw(){
   }
 
   // find the path
-  if(!nosolution){
+  
     path = [];
     var temp = current;
     path.push(temp);
@@ -186,7 +200,7 @@ function draw(){
       path.push(temp.previous);
       temp = temp.previous;
     }
-  }
+   
 
   for (var i = 0; i < path.length; i++) {
     path[i].show(color(0, 0, 255));
