@@ -10,12 +10,13 @@ function removeFromArray(arr , elt){
 }
 
 function heuristic(a,b){
-  var d = dist(a.i,a.j,b.i,b.j) ;
+  // var d = dist(a.i,a.j,b.i,b.j) ;
+  var d = abs(a.i-b.i) + abs(a.j - b.j)
   return d ;
 }
 
-var cols = 5 ;
-var rows = 5 ;
+var cols = 25 ;
+var rows = 25 ;
 var grid = new Array(cols);
 
 var openSet = [] ;
@@ -23,7 +24,7 @@ var closedSet = [] ;
 var start ;
 var end;
 var w , h ;
-
+var path = [];
 
 
   function Spot( i ,j){
@@ -33,6 +34,7 @@ var w , h ;
     this.g = 0 ;
     this.h = 0 ;
     this.neighbors = [] ;
+    this.previous = undefined ;
 
     this.show = function(col){
       fill(col) ;
@@ -64,7 +66,7 @@ var w , h ;
   }
 
 function setup(){
-  createCanvas(500, 500);
+  createCanvas(400, 400);
   console.log("A*");
 
   w = width / cols ;
@@ -98,65 +100,76 @@ function setup(){
 }
 
 function draw(){
-
-  if(openSet.length > 0){
-
-    var winner = 0 ;
+  if (openSet.length > 0) {
+    var winner = 0;
     for (var i = 0; i < openSet.length; i++) {
-       if(openSet[i].f < openSet[winner].f){
-         winner = i
-       }
+      if (openSet[i].f < openSet[winner].f) {
+        winner = i;
+      }
     }
-    var current = openSet[winner] ;
+    var current = openSet[winner];
 
-    if(current === end){
+    if (current === end) {
+      noLoop();
       console.log("Done!");
     }
 
-    removeFromArray(openSet,current) ;
+    removeFromArray(openSet, current);
     //openSet.remove(current)
-    closedSet.push(current) ;
+    closedSet.push(current);
 
     var neighbors = current.neighbors;
 
-    for(var i = 0 ; i < neighbors.length ; i++){
+    for (var i = 0; i < neighbors.length; i++) {
       var neighbor = neighbors[i];
-      
-      if(!closedSet.includes(neighbor)){
-        var tempG = current.g + 1 ;
 
-        if(openSet.includes(neighbor)){
-          if(tempG < neighbor.g){
+      if (!closedSet.includes(neighbor)) {
+        var tempG = current.g + 1;
+
+        if (openSet.includes(neighbor)) {
+          if (tempG < neighbor.g) {
             neighbor.g = tempG;
           }
-        }else{
-          neighbor.g = tempG ;
-          openSet.push(neighbor) ;
+        } else {
+          neighbor.g = tempG;
+          openSet.push(neighbor);
         }
- 
-        neighbor.h = heuristic(neighbor,end) ;
-        neighbor.f = neighbor.g + neighbor.h ;
+
+        neighbor.h = heuristic(neighbor, end);
+        neighbor.f = neighbor.g + neighbor.h;
+        neighbor.previous = current;
       }
     }
     // we can keep going
-  }else{
+  } else {
     // ...
   }
-  background(0) ;
+  background(0);
 
   for (var i = 0; i < cols; i++) {
     for (var j = 0; j < rows; j++) {
-       grid[i][j].show(color(255)) ;
+      grid[i][j].show(color(255));
     }
   }
 
   for (var i = 0; i < closedSet.length; i++) {
-   closedSet[i].show(color(255,0,0)) ; 
+    closedSet[i].show(color(255, 0, 0));
   }
 
   for (var i = 0; i < openSet.length; i++) {
-   openSet[i].show(color(0 ,255, 0)); 
-    
+    openSet[i].show(color(0, 255, 0));
   }
 
+  // find the path
+  path = [];
+  var temp = current;
+  path.push(temp);
+  while (temp.previous) {
+    path.push(temp.previous);
+    temp = temp.previous;
+  }
+
+  for (var i = 0; i < path.length; i++) {
+    path[i].show(color(0, 0, 255));
+  }
 }
