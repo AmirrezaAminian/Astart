@@ -1,0 +1,19 @@
+.btn{
+    background-color: #444;
+    color: #eee;
+    font-family: sans-serif;
+    outline: none;
+    border: none;
+    padding:20px 8px;
+    border-radius:100%;
+    font-size: 18px;
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    cursor: pointer;
+
+}
+
+canvas{
+    margin-left:3rem ;
+}

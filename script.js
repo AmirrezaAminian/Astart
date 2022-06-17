@@ -206,3 +206,13 @@ function draw(){
     path[i].show(color(0, 0, 255));
   }
 }
+
+
+
+
+
+// btn 
+
+let btn = addEventListener('click' , function(){
+  window.location.reload();
+})
