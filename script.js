@@ -1,5 +1,14 @@
 'use strict' ;
 
+
+function removeFromArray(arr , elt){
+  for(var i = arr.length-1; i >=0; i--){
+    if(arr[i] ==elt ){
+      arr.splice(i,1);
+    }
+  }
+}
+
 var cols = 5 ;
 var rows = 5 ;
 var grid = new Array(cols);
@@ -58,6 +67,22 @@ function setup(){
 function draw(){
 
   if(openSet.length > 0){
+
+    var winner = 0 ;
+    for (var i = 0; i < openSet.length; i++) {
+       if(openSet[i].f < openSet[winner].f){
+         winner = i
+       }
+    }
+    var current = openSet[winner] ;
+
+    if(current === end){
+      console.log("Done!");
+    }
+
+    removeFromArray(openSet,current) ;
+    //openSet.remove(current)
+    closedSet.push(current) ;
     // we can keep going
   }else{
     // ...
