@@ -20,7 +20,7 @@ var w , h ;
     this.h = 0 ;
 
     this.show = function(col){
-      fill(255) ;
+      fill(col) ;
       //stroke(0);
       noStroke();
       rect(this.x*w , this.y*h , w - 1 , h - 1)
@@ -28,7 +28,7 @@ var w , h ;
   }
 
 function setup(){
-  createCanvas(400, 400);
+  createCanvas(500, 500);
   console.log("A*");
 
   w = width / cols ;
@@ -66,9 +66,17 @@ function draw(){
 
   for (var i = 0; i < cols; i++) {
     for (var j = 0; j < rows; j++) {
-      grid[i][j].show() ;
+       grid[i][j].show(color(255)) ;
     }
   }
 
+  for (var i = 0; i < closedSet.length; i++) {
+   closedSet[i].show(color(255,0,0)) ; 
+  }
+
+  for (var i = 0; i < openSet.length; i++) {
+   openSet[i].show(color(0 ,255, 0)); 
+    
+  }
 
 }
