@@ -17,3 +17,18 @@
 canvas{
     margin-left:3rem ;
 }
+
+@media only screen and (max-width:400px) {
+    canvas{
+        transform: scale(0.8);
+        margin: 0;
+        
+    }
+
+    h1{
+        margin-left:50px ;
+    }
+    h2{
+        margin-left: 50px;
+    }
+}
