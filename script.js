@@ -10,8 +10,8 @@ function removeFromArray(arr , elt){
 }
 
 function heuristic(a,b){
-  // var d = dist(a.i,a.j,b.i,b.j) ;
-  var d = abs(a.i-b.i) + abs(a.j - b.j)
+  var d = dist(a.i,a.j,b.i,b.j) ;
+  // var d = abs(a.i-b.i) + abs(a.j - b.j)
   return d ;
 }
 
@@ -37,7 +37,7 @@ var path = [];
     this.previous = undefined ;
     this.wall = false ;
 
-    if(random(1) < 0.3){
+    if(random(1) < 0.2){
       this.wall = true ;
     }
 
@@ -150,21 +150,28 @@ function draw(){
       var neighbor = neighbors[i];
 
       if (!closedSet.includes(neighbor) && !neighbor.wall) {
+        
         var tempG = current.g + 1;
+        var newPath = false ;
 
         if (openSet.includes(neighbor)) {
           if (tempG < neighbor.g) {
             neighbor.g = tempG;
+            newPath = true ;
           }
         } else {
           neighbor.g = tempG;
+          newPath = true ;
           openSet.push(neighbor);
         }
 
+        if(newPath){
         neighbor.h = heuristic(neighbor, end);
         neighbor.f = neighbor.g + neighbor.h;
         neighbor.previous = current;
+        }
       }
+     
     }
     // we can keep going
   } else {
